@@ -103,35 +103,3 @@ class MySqlDB {
         
     }
 }
-
-// 数据库配置
-$db_conf = [
-    'host' => '192.168.1.177',
-    'user' => 'crontab2',
-    'pwd' => 'ND5R74ocHMJB58JWSLY2kHhvfNuhV6En',
-    'dbname' => 'edulogs',
-];
-
-// 清空文件
-$filename = "{$db_conf['dbname']}.sql";
-file_put_contents($filename, '');
-
-// MySql数据库类对象
-$obj = MySqlDB::getInstance($db_conf);
-
-// 获取数据库所有表，并处理表字段
-$table_arr = $obj->getTables();
-foreach ($table_arr as $table) {
-    $field_arr = $obj->getFields($table);
-    foreach ($field_arr as $field) {
-        $name = $field['Field'];
-        $type = $field['Type'];
-        $comment = $field['Comment'];
-        if ($type == 'char(2)') {
-            $sql = "ALTER TABLE `{$db_conf['dbname']}`.`{$table}` CHANGE `{$name}` `{$name}` TINYINT(2) UNSIGNED NULL COMMENT '{$comment}';\r\n";
-            file_put_contents($filename, $sql, FILE_APPEND);
-        }
-    }
-}
-
-echo 'success';
