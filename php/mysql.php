@@ -43,13 +43,17 @@ class MySqlDB {
      * @param string $conf['user'] 账号
      * @param string $conf['pwd'] 密码
      * @param string $conf['dbname'] 数据库名
-     * 
+     * @param boolean $is_single 是否单例(true:是 false:否)
      * @return object
      */
-	public static function getInstance($conf){
-		if(self::$instance == null){
-			self::$instance = new self($conf);
-		}
+	public static function getInstance($conf, $is_single = true){
+        if ($is_single) {
+            if(self::$instance == null){
+                self::$instance = new self($conf);
+            }
+        } else {
+            self::$instance = new self($conf);
+        }
 		return self::$instance;
     }
     
