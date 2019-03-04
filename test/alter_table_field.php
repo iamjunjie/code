@@ -37,8 +37,8 @@ foreach ($dbname_arr as $key => $dbname) {
             $default = ($field['Default'] !== null ? "DEFAULT {$field['Default']}" : '');
             $is_null = ($field['Null'] == 'NO' ? 'NOT NULL' : 'NULL');
             $comment = $field['Comment'];
-            if ($type == 'char(2)' || $type == 'char(1)' || $type == 'varchar(2)') {
-                $sql = "ALTER TABLE `{$dbname}`.`{$table}` CHANGE `{$name}` `{$name}` TINYINT(2) UNSIGNED {$default} {$is_null} COMMENT '{$comment}';\r\n";
+            if ($type == 'char(2)' || $type == 'char(1)' || $type == 'varchar(2)' || $type == 'tinyint(2)' || $type == 'tinyint(4)') {
+                $sql = "ALTER TABLE `{$dbname}`.`{$table}` CHANGE `{$name}` `{$name}` TINYINT(1) UNSIGNED {$default} {$is_null} COMMENT '{$comment}';\r\n";
                 file_put_contents($filename, $sql, FILE_APPEND);
             }
         }
