@@ -8,6 +8,8 @@
  * 3. 在被检测的目录下会生成check_danger_func.log文件，记录哪个文件哪行使用了哪个危险函数
  */
 
+ini_set('memory_limit', '2048M');
+
 // 危险函数数组
 $danger_func = [
     // 'phpinfo(',
@@ -111,5 +113,17 @@ function checkFileDangerFunc($filepath, $func)
  */
 function checkStr($str, $func)
 {
+    $str = trim($str);
+    // 注释代码过滤
+    if (substr($str, 0, 1) == '*') {
+        return false;
+    }
+    if (substr($str, 0, 2) == '//') {
+        return false;
+    }
+    // curl_exec方法过滤
+    if (strpos($str, 'curl_exec') !== false) {
+        return false;
+    }
     return strpos($str, $func) !== false;
 }
