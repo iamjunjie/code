@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>javascript实现checkbox级联选择</title>
+</head>
+
+<body>
+	<input id="1" pid="0" type="checkbox" />河北
+	<br />
+	┣━<input id="2" pid="1" type="checkbox" />邯郸
+	<br />
+	┃&nbsp;&nbsp;&nbsp;&nbsp;┗━<input id="3" pid="2" type="checkbox" />武安
+	<br />
+	┗━<input id="7" pid="1" type="checkbox" />唐山
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗━<input id="8" pid="7" type="checkbox" />滦县
+	<br />
+	<input id="4" pid="0" type="checkbox" />北京
+	<br />
+	┣━<input id="5" pid="4" type="checkbox" />海淀
+	<br />
+	┃&nbsp;&nbsp;&nbsp;&nbsp;┗━<input id="6" pid="5" type="checkbox" />门头村
+	<br />
+	┗━<input id="9" pid="4" type="checkbox" />丰台
+	<br />
+	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗━<input id="10" pid="9" type="checkbox" />丰台政府
+	<script type="text/javascript" src="/js/jquery-3.4.0.min.js"></script>
+	<script type="text/javascript">
+		jQuery(function () {
+			/**
+			 * 递归实现 子元素 选择
+			 *
+			 * param obj object 点击的checkbox的jQuery对象
+			*/
+			function childCheck(obj) {
+				//元素 是否 checked
+				var checked = obj.is('checked') != undefined;
+				//元素的id
+				var id = obj.attr('id');
+				//元素的子元素(pid为id的元素)
+				var childNode = jQuery("input[pid='" + id + "']");
+				//如果有子元素 递归
+				if (childNode.length) {
+					jQuery.each(childNode, function (i, o) {
+						jQuery(o).attr('checked', checked);
+						childCheck(jQuery(o));
+					});
+				}
+			}
+
+			/**
+			 * 递归实现 父元素 选择
+			 *
+			 * param obj object 点击的checkbox的jQuery对象
+			*/
+			function parentCheck(obj) {
+				//元素 是否 checked
+				var checked = obj.is('checked') != undefined;
+				//元素的pid
+				var pid = obj.attr('pid');
+				//元素的兄弟元素(pid为pid的元素)
+				var siblingNode = jQuery("input[pid='" + pid + "']");
+				//如果兄弟元素 有一个是选中 则父节点肯定是选中
+				if (siblingNode.length) {
+					jQuery.each(siblingNode, function (i, o) {
+						if (jQuery(o).attr('checked') == 'checked') {
+							checked = true;
+							return false;
+						}
+					});
+				}
+				//元素的父元素(id为pid的元素)
+				var parentNode = jQuery("input[id='" + pid + "']");
+				if (parentNode.length) {
+					jQuery.each(parentNode, function (i, o) {
+						jQuery(o).attr('checked', checked);
+						parentCheck(jQuery(o));
+					});
+				}
+			}
+
+			//为页面中的checkbox绑定change事件
+			jQuery("input[type='checkbox']").change(function () {
+				childCheck(jQuery(this));
+				parentCheck(jQuery(this));
+			});
+		});
+	</script>
+</body>
+
+</html>
