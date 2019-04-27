@@ -26,7 +26,7 @@
 	┗━<input id="9" pid="4" type="checkbox" />丰台
 	<br />
 	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;┗━<input id="10" pid="9" type="checkbox" />丰台政府
-	<script type="text/javascript" src="/js/jquery-3.4.0.min.js"></script>
+	<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
 	<script type="text/javascript">
 		jQuery(function () {
 			/**
@@ -36,7 +36,7 @@
 			*/
 			function childCheck(obj) {
 				//元素 是否 checked
-				var checked = obj.is('checked') != undefined;
+				var checked = obj.attr('checked') != undefined;
 				//元素的id
 				var id = obj.attr('id');
 				//元素的子元素(pid为id的元素)
@@ -57,7 +57,7 @@
 			*/
 			function parentCheck(obj) {
 				//元素 是否 checked
-				var checked = obj.is('checked') != undefined;
+				var checked = obj.attr('checked') != undefined;
 				//元素的pid
 				var pid = obj.attr('pid');
 				//元素的兄弟元素(pid为pid的元素)
