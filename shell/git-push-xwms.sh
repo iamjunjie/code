@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# 希望美术推送代码
+
 # 根目录
 root_dir=$(cd `dirname $0`; pwd)
 api_dir="$root_dir/api"
