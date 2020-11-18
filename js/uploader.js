@@ -40,11 +40,11 @@
 		var acceptExtensions = 'png,gif,jpg,jpeg';
 		var acceptMimeTypes = 'image/jpg,image/jpeg,image/png,image/gif';
 		// 文件上传请求的参数
-		var formData = config.formData ? config.formData : {},
+		var formData = config.formData ? config.formData : {};
 		// 单个文件大小限制4M
-		var fileSize = config.fileSize ? Number(config.fileSize) * 1024 * 1024 : 4194304,
+		var fileSize = config.fileSize ? Number(config.fileSize) * 1024 * 1024 : 4194304;
 		// 上传文件数量限制
-		var fileNum = config.fileNum ? config.fileNum : 1,
+		var fileNum = config.fileNum ? config.fileNum : 1;
 		// 设置文件上传域的name
 		var fileVal = config.fileVal ? config.fileVal : 'file';
 		// 图片压缩配置参数
@@ -96,9 +96,9 @@
 			// 选完文件后，是否自动上传
 			auto: true,
 			// swf文件路径
-			swf: '/js/webuploader-0.1.5/Uploader.swf',
+			swf: 'https://www.xuefangedu.cn/plugins/webuploader-0.1.5/Uploader.swf',
 			// 文件接收服务端
-			server: '/js/uploadify-v3.2.1/uploadify-file.php',
+			server: 'https://www.xuefangedu.cn/plugins/webuploader-0.1.5/uploadify-file.php',
 			// 选择文件的按钮
 			pick: {
 				id: '#' + id,
