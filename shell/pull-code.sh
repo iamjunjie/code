@@ -24,6 +24,9 @@ do
                 echo "==========开始拉取：$tmp_dir_path/$item"
                 cd "$tmp_dir_path/$item"
 
+                echo "仓库地址：git remote -v"
+                git remote -v
+
                 echo "切换分支: master, 命令: git checkout master"
                 git checkout master
 
