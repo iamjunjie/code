@@ -13,79 +13,79 @@
  */
 class WeixinApi {
 
-	//应用ID
+	// 应用ID
 	private $appID;
 
-	//应用密钥
+	// 应用密钥
 	private $appSecret;
 
-	//公众号的全局唯一票据
+	// 公众号的全局唯一票据
 	private $accessToken;
 
-	//微信公众平台接口URL
+	// 微信公众平台接口URL
 	private $urls = array(
-		//获取公众号的全局唯一票据
+		// 获取公众号的全局唯一票据
 		'get_access_token' => 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s',
-		//微信服务器IP地址
-		'get_server_ip'	   => 'https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=%s',
-		//上传多媒体文件
+		// 微信服务器IP地址
+		'get_server_ip' => 'https://api.weixin.qq.com/cgi-bin/getcallbackip?access_token=%s',
+		// 上传多媒体文件
 		'upload_media_file' => 'https://api.weixin.qq.com/cgi-bin/media/upload?access_token=%s&type=%s',
-		//下载多媒体文件
+		// 下载多媒体文件
 		'get_media_file' => 'http://file.api.weixin.qq.com/cgi-bin/media/get?access_token=%s&media_id=%s',
-		//查询所有分组
+		// 查询所有分组
 		'get_group' => 'https://api.weixin.qq.com/cgi-bin/groups/get?access_token=%s',
-		//创建分组
+		// 创建分组
 		'create_group' => 'https://api.weixin.qq.com/cgi-bin/groups/create?access_token=%s',
-		//修改分组
+		// 修改分组
 		'update_group' => 'https://api.weixin.qq.com/cgi-bin/groups/update?access_token=%s',
-		//查询用户所在分组
+		// 查询用户所在分组
 		'get_user_group_id' => 'https://api.weixin.qq.com/cgi-bin/groups/getid?access_token=%s',
-		//移动用户分组
+		// 移动用户分组
 		'update_user_group_id' => 'https://api.weixin.qq.com/cgi-bin/groups/members/update?access_token=%s',
-		//批量移动用户分组
+		// 批量移动用户分组
 		'update_users_group_id' => 'https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate?access_token=%s',
-		//设置 备注名
+		// 设置 备注名
 		'update_user_remark' => 'https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token=%s',
-		//获取用户基本信息
+		// 获取用户基本信息
 		'get_user_base_info' => 'https://api.weixin.qq.com/cgi-bin/user/info?access_token=%s&openid=%s&lang=%s',
-		//获取用户列表
+		// 获取用户列表
 		'get_user' => 'https://api.weixin.qq.com/cgi-bin/user/get?access_token=%s&next_openid=%s',
-		//获取菜单
+		// 获取菜单
 		'get_menu' => 'https://api.weixin.qq.com/cgi-bin/menu/get?access_token=%s',
-		//创建菜单
+		// 创建菜单
 		'create_menu' => 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token=%s',
-		//删除菜单
+		// 删除菜单
 		'del_menu' => 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=%s',
-		//获取短链接
+		// 获取短链接
 		'get_short_url' => 'https://api.weixin.qq.com/cgi-bin/shorturl?access_token=%s',
-		//获取用户增减数据
+		// 获取用户增减数据
 		'get_user_summary' => 'https://api.weixin.qq.com/datacube/getusersummary?access_token=%s',
-		//获取累计用户数据
+		// 获取累计用户数据
 		'get_user_cumulate' => 'https://api.weixin.qq.com/datacube/getusercumulate?access_token=%s',
-		//获取图文群发每日数据
+		// 获取图文群发每日数据
 		'get_article_summary' => 'https://api.weixin.qq.com/datacube/getarticlesummary?access_token=%s',
-		//获取图文群发总数据
+		// 获取图文群发总数据
 		'get_article_total' => 'https://api.weixin.qq.com/datacube/getarticletotal?access_token=%s',
-		//获取图文统计数据
+		// 获取图文统计数据
 		'get_user_read' => 'https://api.weixin.qq.com/datacube/getuserread?access_token=%s',
-		//获取图文统计分时数据
+		// 获取图文统计分时数据
 		'get_user_read_hour' => 'https://api.weixin.qq.com/datacube/getuserreadhour?access_token=%s',
-		//获取图文分享转发数据
+		// 获取图文分享转发数据
 		'get_user_share' => 'https://api.weixin.qq.com/datacube/getusershare?access_token=%s',
-		//获取图文分享转发分时数据
+		// 获取图文分享转发分时数据
 		'get_user_share_hour' => 'https://api.weixin.qq.com/datacube/getusersharehour?access_token=%s',
-		//群发文本消息
+		// 群发文本消息
 		'send_text_message_all' => 'https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s',
-		//上传图文消息素材
+		// 上传图文消息素材
 		'upload_news' => 'https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token=%s',
-		//群发图文消息
+		// 群发图文消息
 		'send_text_image_message_all' => 'https://api.weixin.qq.com/cgi-bin/message/mass/sendall?access_token=%s',
-		//获取jsapi_ticket
+		// 获取jsapi_ticket
 		'get_jsapi_ticket' => 'https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=%s&type=jsapi',
-		//上传图片
+		// 上传图片
 		'upload_img' => 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=%s',
-		//预览群发消息
-		'preview'   => 'https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token=%s',
+		// 预览群发消息
+		'preview' => 'https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token=%s',
 	);
 
 	/**
@@ -429,7 +429,6 @@ class WeixinApi {
 		$url = sprintf($this->urls['get_user'], $this->accessToken, $nextOpenID);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
-
 		static $count = 0;
 		static $users = array();
 		if(isset($result['count'])){
@@ -503,7 +502,7 @@ class WeixinApi {
 	public function createMenu($menu){
 		$url = sprintf($this->urls['create_menu'], $this->accessToken);
 		foreach ($menu as $menuKey => $menuValue) {
-			//处理一级菜单数据
+			// 处理一级菜单数据
 			foreach ($menuValue as $oneMenuKey => $oneMenuValue) {
 				if(empty($oneMenuValue)){
 					continue;
@@ -512,7 +511,7 @@ class WeixinApi {
 					$menu[$menuKey][$oneMenuKey] = urlencode($oneMenuValue);
 					continue;
 				}
-				//处理二级菜单
+				// 处理二级菜单
 				foreach ($oneMenuValue as $subMenuKey => $subMenuValue) {
 					foreach ($subMenuValue as $twoMenuKey => $twoMenuValue) {
 						$menu[$menuKey][$oneMenuKey][$subMenuKey][$twoMenuKey] = urlencode($twoMenuValue);
@@ -856,7 +855,7 @@ class WeixinApi {
 	 */
 	public function uploadNews($article){
 		$url = sprintf($this->urls['upload_news'], $this->accessToken);
-		//消息内容模板
+		// 消息内容模板
 		$tpl = '{"thumb_media_id":"%s", "author":"%s","title":"%s","content_source_url":"%s","content":"%s","digest":"%s","show_cover_pic":"%s"}';
 		$newsString = '';
 		foreach ($article as $key => $value) {
@@ -895,7 +894,7 @@ class WeixinApi {
 	 * ------------------------------------------------------------
 	 */
 	public function previewGraphic($name, $media_id){
-		//获取用户openID
+		// 获取用户openID
 		$users = $this->getUser();
 		$user_info = null;
 		if(!empty($users)){
@@ -952,22 +951,22 @@ class WeixinApi {
 	 */
 	public function curl($url, $data = null){
 		$ch = curl_init($url);
-		//禁用后cURL将终止从服务端进行验证
+		// 禁用后cURL将终止从服务端进行验证
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
-		//将获取的信息以文件流的形式返回，而不是直接输出
+		// 将获取的信息以文件流的形式返回，而不是直接输出
 		// curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/4.0 (compatible;)");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
-		//启用时会将头文件的信息作为数据流输出
+		// 启用时会将头文件的信息作为数据流输出
 		curl_setopt($ch, CURLOPT_HEADER, FALSE);
-		//设置post请求
+		// 设置post请求
 		if(!empty($data)){
 			curl_setopt($ch, CURLOPT_POST, TRUE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		}
-		//执行请求
+		// 执行请求
 		$result = curl_exec($ch);
-		//关闭
+		// 关闭
 		curl_close($ch);
 		return $result;
 	}
