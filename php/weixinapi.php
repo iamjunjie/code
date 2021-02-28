@@ -86,6 +86,8 @@ class WeixinApi {
 		'upload_img' => 'https://api.weixin.qq.com/cgi-bin/media/uploadimg?access_token=%s',
 		// 预览群发消息
 		'preview' => 'https://api.weixin.qq.com/cgi-bin/message/mass/preview?access_token=%s',
+		// 获取小程序二维码接口 - A，有数量限制10万
+		'get_small_routine_qrcode_a' => 'https://api.weixin.qq.com/wxa/getwxacode?access_token=%s',
 	);
 
 	/**
@@ -910,6 +912,45 @@ class WeixinApi {
 		$result = $this->curl($url, $param);
 		$result = $this->jsonDecode($result);
 		return ((isset($result['errcode']) && ($result['errcode']==0)) ? TRUE : FALSE);
+	}
+
+	/**
+	 * 获取小程序二维码接口A类
+	 * ------------------------------------------------------------
+	 * @access public
+	 * ------------------------------------------------------------
+	 * @param  string $data['path'] 扫码进入的小程序页面路径，最大长度 128 字节，不能为空；对于小游戏，可以只传入 query 部分，来实现传参效果，如：传入 "?foo=bar"，即可在 wx.getLaunchOptionsSync 接口中的 query 参数获取到 {foo:"bar"}。
+	 * @param  string $data['width'] 二维码的宽度，单位 px。最小 280px，最大 1280px
+	 * @param  string $data['auto_color'] 自动配置线条颜色，如果颜色依然是黑色，则说明不建议配置主色调
+	 * @param  string $data['line_color'] auto_color 为 false 时生效，使用 rgb 设置颜色 例如 {"r":"xxx","g":"xxx","b":"xxx"} 十进制表示
+	 * @param  string $data['is_hyaline'] 是否需要透明底色，为 true 时，生成透明底色的小程序码
+	 * ------------------------------------------------------------
+	 * @return bool 
+	 * ------------------------------------------------------------
+	 * @author wujianming <wujianming@xiaohe.com>
+	 * ------------------------------------------------------------
+	 * @date 2016-04-14 17:40
+	 * ------------------------------------------------------------
+	 */
+	public function getSmallRoutineQRcodeA($data) {
+		$param['path'] = $data['path'];
+		if (isset($data['width']) && !empty($data['width'])) {
+			$param['width'] = $data['width'];
+		}
+		if (isset($data['auto_color']) && !empty($data['auto_color'])) {
+			$param['auto_color'] = $data['auto_color'];
+		}
+		if (isset($data['line_color']) && !empty($data['line_color'])) {
+			$param['line_color'] = $data['line_color'];
+		}
+		if (isset($data['is_hyaline']) && !empty($data['is_hyaline'])) {
+			$param['is_hyaline'] = $data['is_hyaline'];
+		}
+		$url    = sprintf($this->urls['get_small_routine_qrcode_a'], $this->accessToken);
+		$param  = json_encode($param);
+		$result = $this->curl($url, $param);
+		$result = $this->jsonDecode($result);
+		return isset($result['buffer']) ? $result['buffer'] : null;
 	}
 
 	/**
