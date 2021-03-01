@@ -103,7 +103,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:50
 	 * ------------------------------------------------------------
 	 */
-	public function init($appID, $appSecret){
+	public function init($appID, $appSecret) {
 		$this->appID       = $appID;
 		$this->appSecret   = $appSecret;
 		$this->accessToken = $this->getAccessToken();
@@ -121,19 +121,19 @@ class WeixinApi {
 	 * @date 2015-03-11 19:51
 	 * ------------------------------------------------------------
 	 */
-	public function getAccessToken(){
+	public function getAccessToken() {
 		$url  = sprintf($this->urls['get_access_token'], $this->appID, $this->appSecret);
 		$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . "{$this->appID}_{$this->appSecret}_weixin_access_token.json";
-		if(file_exists($file)){
+		if (file_exists($file)) {
 			$content = file_get_contents($file);
 			$content = $this->jsonDecode($content);
-			if(time() < $content['expires_in']){
+			if (time() < $content['expires_in']) {
 				return $content['access_token'];
 			}
 		}
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
-		if(isset($result['expires_in']) && isset($result['access_token'])){
+		if (isset($result['expires_in']) && isset($result['access_token'])) {
 			$result['expires_in'] = $result['expires_in'] + time();
 			file_put_contents($file, json_encode($result));
 		}
@@ -152,13 +152,13 @@ class WeixinApi {
 	 * @date 2015-03-11 19:51
 	 * ------------------------------------------------------------
 	 */
-	public function getJsApiTicket(){
+	public function getJsApiTicket() {
 		$url  = sprintf($this->urls['get_jsapi_ticket'], $this->accessToken);
 		$file = dirname(__FILE__) . DIRECTORY_SEPARATOR . "{$this->appID}_weixin_jsapi_ticket.json";
-		if(file_exists($file)){
+		if (file_exists($file)) {
 			$content = file_get_contents($file);
 			$content = $this->jsonDecode($content);
-			if(time() < $content['expires_in']){
+			if (time() < $content['expires_in']) {
 				return $content['ticket'];
 			}
 		}
@@ -181,7 +181,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:52
 	 * ------------------------------------------------------------
 	 */
-	public function getServerIP(){
+	public function getServerIP() {
 		$url = sprintf($this->urls['get_server_ip'], $this->accessToken);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
@@ -207,7 +207,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:53
 	 * ------------------------------------------------------------
 	 */
-	public function uploadMediaFile($type, $filePath){
+	public function uploadMediaFile($type, $filePath) {
 		$url = sprintf($this->urls['upload_media_file'], $this->accessToken, $type);
 		$data = array('media' => "@{$filePath}");
 		$result = $this->curl($url, $data);
@@ -229,7 +229,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:54
 	 * ------------------------------------------------------------
 	 */
-	public function getMediaFile($mediaID){
+	public function getMediaFile($mediaID) {
 		$url = sprintf($this->urls['get_media_file'], $this->accessToken, $mediaID);
 		return $this->curl($url);
 	}
@@ -246,7 +246,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:54
 	 * ------------------------------------------------------------
 	 */
-	public function getGroup(){
+	public function getGroup() {
 		$url = sprintf($this->urls['get_group'], $this->accessToken);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
@@ -267,7 +267,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:54
 	 * ------------------------------------------------------------
 	 */
-	public function createGroup($name){
+	public function createGroup($name) {
 		$url = sprintf($this->urls['create_group'], $this->accessToken);
 		$param = '{"group":{"name":"' . $name . '"}}';
 		$result = $this->curl($url, $param);
@@ -290,7 +290,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:54
 	 * ------------------------------------------------------------
 	 */
-	public function updateGroup($id, $name){
+	public function updateGroup($id, $name) {
 		$url = sprintf($this->urls['update_group'], $this->accessToken);
 		$param = '{"group":{"id":' . $id . ',"name":"' . $name . '"}}';
 		$result = $this->curl($url, $param);
@@ -312,7 +312,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:56
 	 * ------------------------------------------------------------
 	 */
-	public function getUserGroupID($openID){
+	public function getUserGroupID($openID) {
 		$url = sprintf($this->urls['get_user_group_id'], $this->accessToken);
 		$param = '{"openid":"' . $openID . '"}';
 		$result = $this->curl($url, $param);
@@ -335,7 +335,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:56
 	 * ------------------------------------------------------------
 	 */
-	public function updateUserGroupID($openID, $groupID){
+	public function updateUserGroupID($openID, $groupID) {
 		$url = sprintf($this->urls['update_user_group_id'], $this->accessToken);
 		$param = '{"openid":"' . $openID . '","to_groupid":' . $groupID . '}';
 		$result = $this->curl($url, $param);
@@ -358,7 +358,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:57
 	 * ------------------------------------------------------------
 	 */
-	public function updateUsersGroupID($openIDs, $groupID){
+	public function updateUsersGroupID($openIDs, $groupID) {
 		$url = sprintf($this->urls['update_users_group_id'], $this->accessToken);
 		$openIDString = implode('","', $openIDs);
 		$param = '{"openid_list":["' . $openIDString . '"],"to_groupid":' . $groupID . '}';
@@ -382,7 +382,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:57
 	 * ------------------------------------------------------------
 	 */
-	public function updateUserRemark($openID, $remark){
+	public function updateUserRemark($openID, $remark) {
 		$url = sprintf($this->urls['update_user_remark'], $this->accessToken);
 		$param = '{"openid":"' . $openID . '","remark":"' . $remark . '"}';
 		$result = $this->curl($url, $param);
@@ -405,7 +405,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:57
 	 * ------------------------------------------------------------
 	 */
-	public function getUserBaseInfo($openID, $lang = 'zh_CN'){
+	public function getUserBaseInfo($openID, $lang = 'zh_CN') {
 		$url = sprintf($this->urls['get_user_base_info'], $this->accessToken, $openID, $lang);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
@@ -426,22 +426,22 @@ class WeixinApi {
 	 * @date 2015-03-11 19:58
 	 * ------------------------------------------------------------
 	 */
-	public function getUser($nextOpenID = ''){
+	public function getUser($nextOpenID = '') {
 		set_time_limit(0);
 		$url = sprintf($this->urls['get_user'], $this->accessToken, $nextOpenID);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
 		static $count = 0;
 		static $users = array();
-		if(isset($result['count'])){
+		if (isset($result['count'])) {
 			$count += $result['count'];
 		}
-		if(isset($result['data']['openid']) && !empty($result['data']['openid'])){
+		if (isset($result['data']['openid']) && !empty($result['data']['openid'])) {
 			foreach ($result['data']['openid'] as $key => $value) {
 				$users[] = $this->getUserBaseInfo($value);
 			}
 		}
-		if(isset($result['next_openid']) && !empty($result['next_openid'])){
+		if (isset($result['next_openid']) && !empty($result['next_openid'])) {
 			$this->getUser($result['next_openid']);
 		}
 		return array('total' => $count, 'users' => $users);
@@ -459,7 +459,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:58
 	 * ------------------------------------------------------------
 	 */
-	public function getMenu(){
+	public function getMenu() {
 		$url = sprintf($this->urls['get_menu'], $this->accessToken);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
@@ -501,15 +501,15 @@ class WeixinApi {
 	 * @date 2015-03-11 19:59
 	 * ------------------------------------------------------------
 	 */
-	public function createMenu($menu){
+	public function createMenu($menu) {
 		$url = sprintf($this->urls['create_menu'], $this->accessToken);
 		foreach ($menu as $menuKey => $menuValue) {
 			// 处理一级菜单数据
 			foreach ($menuValue as $oneMenuKey => $oneMenuValue) {
-				if(empty($oneMenuValue)){
+				if (empty($oneMenuValue)) {
 					continue;
 				}
-				if($oneMenuKey != 'sub_button'){
+				if ($oneMenuKey != 'sub_button') {
 					$menu[$menuKey][$oneMenuKey] = urlencode($oneMenuValue);
 					continue;
 				}
@@ -540,7 +540,7 @@ class WeixinApi {
 	 * @date 2015-03-11 19:59
 	 * ------------------------------------------------------------
 	 */
-	public function delMenu(){
+	public function delMenu() {
 		$url = sprintf($this->urls['del_menu'], $this->accessToken);
 		$result = $this->curl($url);
 		$result = $this->jsonDecode($result);
@@ -561,7 +561,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:00
 	 * ------------------------------------------------------------
 	 */
-	public function getShortUrl($longUrl){
+	public function getShortUrl($longUrl) {
 		$url = sprintf($this->urls['get_short_url'], $this->accessToken);
 		$param = '{"action":"long2short","long_url":"' . $longUrl . '"}';
 		$result = $this->curl($url, $param);
@@ -588,7 +588,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:01
 	 * ------------------------------------------------------------
 	 */
-	public function getUserSummary($startTime, $endTime){
+	public function getUserSummary($startTime, $endTime) {
 		$url = sprintf($this->urls['get_user_summary'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -615,7 +615,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:01
 	 * ------------------------------------------------------------
 	 */
-	public function getUserCumulate($startTime, $endTime){
+	public function getUserCumulate($startTime, $endTime) {
 		$url = sprintf($this->urls['get_user_cumulate'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -642,7 +642,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:02
 	 * ------------------------------------------------------------
 	 */
-	public function getArticleSummary($startTime, $endTime){
+	public function getArticleSummary($startTime, $endTime) {
 		$url = sprintf($this->urls['get_article_summary'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -669,7 +669,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:02
 	 * ------------------------------------------------------------
 	 */
-	public function getArticleTotal($startTime, $endTime){
+	public function getArticleTotal($startTime, $endTime) {
 		$url = sprintf($this->urls['get_article_total'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -696,7 +696,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function getUserRead($startTime, $endTime){
+	public function getUserRead($startTime, $endTime) {
 		$url = sprintf($this->urls['get_user_read'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -723,7 +723,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function getUserReadHour($startTime, $endTime){
+	public function getUserReadHour($startTime, $endTime) {
 		$url = sprintf($this->urls['get_user_read_hour'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -750,7 +750,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function getUserShare($startTime, $endTime){
+	public function getUserShare($startTime, $endTime) {
 		$url = sprintf($this->urls['get_user_share'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -777,7 +777,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function getUserShareHour($startTime, $endTime){
+	public function getUserShareHour($startTime, $endTime) {
 		$url = sprintf($this->urls['get_user_share_hour'], $this->accessToken);
 		$param = '{"begin_date": "' . $startTime . '","end_date": "' . $endTime . '"}';
 		$result = $this->curl($url, $param);
@@ -800,10 +800,10 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function sendTextMessageAll($groupID, $content){
+	public function sendTextMessageAll($groupID, $content) {
 		$url = sprintf($this->urls['send_text_message_all'], $this->accessToken);
 		$param = '';
-		if($groupID < 0){
+		if ($groupID < 0) {
 			$param = '{"filter":{"is_to_all":true}, "text":{"content":"' . $content . '"}, "msgtype":"text"}';
 		}else{
 			$param = '{"filter":{"is_to_all":false, "group_id":"' . $groupID . '"}, "text":{"content":"' . $content . '"}, "msgtype":"text"}';
@@ -828,10 +828,10 @@ class WeixinApi {
 	 * @date 2015-04-03 17:47
 	 * ------------------------------------------------------------
 	 */
-	public function sendTextImageMessageAll($groupID, $mediaID){
+	public function sendTextImageMessageAll($groupID, $mediaID) {
 		$url = sprintf($this->urls['send_text_image_message_all'], $this->accessToken);
 		$param = '';
-		if($groupID < 0){
+		if ($groupID < 0) {
 			$param = '{"filter":{"is_to_all":true}, "mpnews":{"media_id":"' . $mediaID . '"}, "msgtype":"mpnews"}';
 		}else{
 			$param = '{"filter":{"is_to_all":false, "group_id":"' . $groupID . '"}, "mpnews":{"media_id":"' . $mediaID . '"}, "msgtype":"mpnews"}';
@@ -855,7 +855,7 @@ class WeixinApi {
 	 * @date 2015-04-03 17:40
 	 * ------------------------------------------------------------
 	 */
-	public function uploadNews($article){
+	public function uploadNews($article) {
 		$url = sprintf($this->urls['upload_news'], $this->accessToken);
 		// 消息内容模板
 		$tpl = '{"thumb_media_id":"%s", "author":"%s","title":"%s","content_source_url":"%s","content":"%s","digest":"%s","show_cover_pic":"%s"}';
@@ -895,13 +895,13 @@ class WeixinApi {
 	 * @date 2016-04-14 17:40
 	 * ------------------------------------------------------------
 	 */
-	public function previewGraphic($name, $media_id){
+	public function previewGraphic($name, $media_id) {
 		// 获取用户openID
 		$users = $this->getUser();
 		$user_info = null;
-		if(!empty($users)){
+		if (!empty($users)) {
 			foreach ($users['users'] as $key => $value) {
-				if($name == $value['nickname']){
+				if ($name == $value['nickname']) {
 					$user_info = $value['openid'];
 					break;
 				}
@@ -946,11 +946,9 @@ class WeixinApi {
 		if (isset($data['is_hyaline']) && !empty($data['is_hyaline'])) {
 			$param['is_hyaline'] = $data['is_hyaline'];
 		}
-		$url    = sprintf($this->urls['get_small_routine_qrcode_a'], $this->accessToken);
-		$param  = json_encode($param);
-		$result = $this->curl($url, $param);
-		$result = $this->jsonDecode($result);
-		return isset($result['buffer']) ? $result['buffer'] : null;
+		$url = sprintf($this->urls['get_small_routine_qrcode_a'], $this->accessToken);
+		$param = json_encode($param);
+		return $this->curl($url, $param);
 	}
 
 	/**
@@ -967,9 +965,9 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function jsonDecode($jsonString){
+	public function jsonDecode($jsonString) {
 		$arr = array();
-		if(!empty($jsonString)){
+		if (!empty($jsonString)) {
 			$arr = json_decode($jsonString, true);
 		}
 		return $arr;
@@ -990,7 +988,7 @@ class WeixinApi {
 	 * @date 2015-03-11 20:03
 	 * ------------------------------------------------------------
 	 */
-	public function curl($url, $data = null){
+	public function curl($url, $data = null) {
 		$ch = curl_init($url);
 		// 禁用后cURL将终止从服务端进行验证
 		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -1001,7 +999,7 @@ class WeixinApi {
 		// 启用时会将头文件的信息作为数据流输出
 		curl_setopt($ch, CURLOPT_HEADER, FALSE);
 		// 设置post请求
-		if(!empty($data)){
+		if (!empty($data)) {
 			curl_setopt($ch, CURLOPT_POST, TRUE);
 			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 		}
