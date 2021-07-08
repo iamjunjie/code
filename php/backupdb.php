@@ -2,14 +2,10 @@
 /**
  * 一键备份数据库结构脚本
  * 
- * 1. 进入目录：cd code/php
- * 2. 执行脚本：php backupdb.php
+ * 进入目录：cd code/php
+ * 修改配置：$dbconf 备份数据库的连接信息配置
+ * 执行脚本：php backupdb.php
  */
-
-use Think\Db\Driver\Mysql;
-
-// 引入MySQL操作类
-require 'mysql.php';
 
 // 数据库配置
 $dbconf = [
@@ -29,6 +25,8 @@ $dbconf = [
     ],
 ];
 
+// 引入MySQL操作类
+require 'mysql.php';
 foreach ($dbconf as $key => $value) {
     // 数据库SQL文件名
     $filename = $key . '.sql';
